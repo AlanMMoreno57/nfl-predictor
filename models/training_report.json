@@ -1,0 +1,29 @@
+{
+  "test_season": 2025,
+  "n_train_games": 1392,
+  "n_test_games": 285,
+  "feature_columns": [
+    "diff_epa_off_roll5",
+    "diff_epa_def_roll5",
+    "diff_elo",
+    "diff_rest",
+    "diff_injury_index",
+    "div_game",
+    "spread_line"
+  ],
+  "logistic_regression": {
+    "accuracy": 0.6596491228070176,
+    "log_loss": 0.6138402595004647,
+    "brier": 0.2140294774458114
+  },
+  "xgboost": {
+    "accuracy": 0.6596491228070176,
+    "log_loss": 0.6168084078448467,
+    "brier": 0.21403861045837402
+  },
+  "ridge_margin": {
+    "mae": 9.675271788598435,
+    "rmse": 12.233373684926953
+  },
+  "vegas_benchmark_mae": 9.670175438596491
+}
