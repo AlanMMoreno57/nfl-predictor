@@ -53,6 +53,10 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
           git add data/ models/ dashboard/data/
           git diff --staged --quiet || git commit -m "Actualización automática semanal: $(date -u +'%Y-%m-%d')"
+          # Por si el repo avanzó (ej. un push manual) entre que este job
+          # arrancó y este paso corrió, se trae lo más reciente antes de
+          # subir — evita el error "Updates were rejected" en el bot.
+          git pull --rebase origin main
           git push
 
       - name: Configurar GitHub Pages
