@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NFL Predictor — Panel de predicciones</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#10161f">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="NFL Pred.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Teko:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -210,6 +217,21 @@
   }
   .error { color: var(--danger); }
 
+  .install-btn {
+    background: var(--amber);
+    border: none;
+    color: #1a1206;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    padding: 8px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .install-btn:hover { background: #ffb84d; }
+
   @media (max-width: 560px) {
     .teams { font-size: 22px; }
     header { flex-direction: column; align-items: flex-start; }
@@ -221,7 +243,10 @@
 
 <header>
   <div class="brand">NFL <span>PREDICTOR</span></div>
-  <div class="meta" id="meta-info">Cargando…</div>
+  <div style="display:flex; align-items:center; gap:14px;">
+    <button id="install-btn" class="install-btn" style="display:none;">📲 Instalar app</button>
+    <div class="meta" id="meta-info">Cargando…</div>
+  </div>
 </header>
 
 <main>
@@ -344,6 +369,51 @@ document.querySelectorAll('.controls button').forEach(btn => {
 });
 
 loadPredictions();
+
+// --- PWA: registro de service worker + botón de instalación ---
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("service-worker.js").catch((err) => {
+      console.warn("No se pudo registrar el service worker:", err);
+    });
+  });
+}
+
+let deferredInstallPrompt = null;
+const installBtn = document.getElementById("install-btn");
+
+// Chrome/Android: se puede interceptar el prompt nativo de instalación.
+window.addEventListener("beforeinstallprompt", (event) => {
+  event.preventDefault();
+  deferredInstallPrompt = event;
+  installBtn.style.display = "inline-block";
+});
+
+installBtn.addEventListener("click", async () => {
+  if (deferredInstallPrompt) {
+    deferredInstallPrompt.prompt();
+    await deferredInstallPrompt.userChoice;
+    deferredInstallPrompt = null;
+    installBtn.style.display = "none";
+  } else {
+    // iOS Safari no soporta beforeinstallprompt: se dan instrucciones manuales.
+    alert(
+      "Para instalar en iPhone/iPad:\n\n" +
+      "1. Toca el botón de Compartir (el cuadrado con flecha hacia arriba)\n" +
+      "2. Elige \"Agregar a pantalla de inicio\"\n" +
+      "3. Confirma con \"Agregar\""
+    );
+  }
+});
+
+// En iOS no hay evento beforeinstallprompt, así que mostramos el botón
+// siempre que la app NO esté ya corriendo en modo standalone (instalada).
+const isStandalone = window.matchMedia("(display-mode: standalone)").matches
+  || window.navigator.standalone === true;
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+if (isIOS && !isStandalone) {
+  installBtn.style.display = "inline-block";
+}
 </script>
 
 </body>
