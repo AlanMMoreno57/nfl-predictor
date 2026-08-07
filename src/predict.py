@@ -52,6 +52,78 @@ FEATURE_COLUMNS = [
 ]
 
 
+def get_team_record(df: pl.DataFrame, team: str, season: int, week: int) -> dict:
+    """
+    Récord de la temporada EN CURSO para `team`, contando solo partidos
+    ya jugados antes de `week`. Si todavía no ha jugado ninguno esta
+    temporada (ej. semana 1), se regresa el récord final de la
+    temporada anterior en su lugar, marcado con is_previous_season=True
+    — más útil que mostrar "0-0" sin contexto.
+    """
+    played = df.filter(
+        (pl.col("season") == season) & (pl.col("week") < week) &
+        (pl.col("home_score").is_not_null()) &
+        ((pl.col("home_team") == team) | (pl.col("away_team") == team))
+    )
+
+    def _tally(games: pl.DataFrame) -> dict:
+        wins = losses = ties = 0
+        for g in games.to_dicts():
+            is_home = g["home_team"] == team
+            own = g["home_score"] if is_home else g["away_score"]
+            opp = g["away_score"] if is_home else g["home_score"]
+            if own > opp:
+                wins += 1
+            elif own < opp:
+                losses += 1
+            else:
+                ties += 1
+        return {"wins": wins, "losses": losses, "ties": ties}
+
+    if played.height > 0:
+        rec = _tally(played)
+        rec["is_previous_season"] = False
+        rec["season"] = season
+        return rec
+
+    prev = df.filter(
+        (pl.col("season") == season - 1) & (pl.col("home_score").is_not_null()) &
+        ((pl.col("home_team") == team) | (pl.col("away_team") == team))
+    )
+    rec = _tally(prev)
+    rec["is_previous_season"] = True
+    rec["season"] = season - 1
+    return rec
+
+
+def get_head_to_head(df: pl.DataFrame, team_a: str, team_b: str, before_season: int, before_week: int, limit: int = 5) -> list:
+    """
+    Últimos `limit` enfrentamientos entre team_a y team_b (en cualquier
+    combinación de local/visitante), estrictamente anteriores al
+    partido que se está prediciendo — no incluye el partido actual.
+    """
+    matchups = df.filter(
+        pl.col("home_score").is_not_null() &
+        (((pl.col("home_team") == team_a) & (pl.col("away_team") == team_b)) |
+         ((pl.col("home_team") == team_b) & (pl.col("away_team") == team_a))) &
+        ((pl.col("season") < before_season) |
+         ((pl.col("season") == before_season) & (pl.col("week") < before_week)))
+    ).sort(["season", "week"], descending=True).head(limit)
+
+    history = []
+    for g in matchups.to_dicts():
+        winner = g["home_team"] if g["home_score"] > g["away_score"] else (
+            g["away_team"] if g["away_score"] > g["home_score"] else None
+        )
+        history.append({
+            "season": g["season"], "week": g["week"],
+            "home_team": g["home_team"], "away_team": g["away_team"],
+            "home_score": g["home_score"], "away_score": g["away_score"],
+            "winner": winner,
+        })
+    return history
+
+
 def find_next_open_week(df: pl.DataFrame) -> tuple[int, int]:
     """Encuentra la primera (season, week) con partidos sin resultado."""
     upcoming = (
@@ -105,7 +177,7 @@ def main():
         season, week = find_next_open_week(df)
 
     print(f"[predict] Generando predicciones para temporada {season}, semana {week}...")
-    games = df.filter((pl.col("season") == season) & (pl.col("week") == week)).sort("game_id")
+    games = df.filter((pl.col("season") == season) & (pl.col("week") == week)).sort(["gameday", "gametime"])
 
     if games.height == 0:
         raise RuntimeError(f"No se encontraron partidos para season={season}, week={week}.")
@@ -122,6 +194,9 @@ def main():
         "game_id", "season", "week", "home_team", "away_team",
         "spread_line", "total_line", "div_game", "home_qb_name", "away_qb_name",
         "home_coach", "away_coach", "roof", "surface", "temp", "wind",
+        "gameday", "weekday", "gametime",
+        "home_epa_off_roll5", "home_epa_def_roll5",
+        "away_epa_off_roll5", "away_epa_def_roll5",
     ]).to_pandas()
 
     predictions = []
@@ -129,10 +204,18 @@ def main():
         p_home = float(prob_ensemble[i])
         margin = float(pred_margin[i])
         winner = row["home_team"] if p_home >= 0.5 else row["away_team"]
+
+        home_record = get_team_record(df, row["home_team"], season, week)
+        away_record = get_team_record(df, row["away_team"], season, week)
+        h2h = get_head_to_head(df, row["home_team"], row["away_team"], season, week)
+
         predictions.append({
             "game_id": row["game_id"],
             "season": int(row["season"]),
             "week": int(row["week"]),
+            "gameday": _clean(row["gameday"]),
+            "weekday": _clean(row["weekday"]),
+            "gametime": _clean(row["gametime"]),
             "home_team": row["home_team"],
             "away_team": row["away_team"],
             "predicted_winner": winner,
@@ -151,6 +234,13 @@ def main():
             "surface": _clean(row["surface"]),
             "temp_f": _clean(row["temp"]),
             "wind_mph": _clean(row["wind"]),
+            "home_record": home_record,
+            "away_record": away_record,
+            "home_epa_off_roll5": _clean(row["home_epa_off_roll5"]),
+            "home_epa_def_roll5": _clean(row["home_epa_def_roll5"]),
+            "away_epa_off_roll5": _clean(row["away_epa_off_roll5"]),
+            "away_epa_def_roll5": _clean(row["away_epa_def_roll5"]),
+            "head_to_head": h2h,
         })
 
     output = {

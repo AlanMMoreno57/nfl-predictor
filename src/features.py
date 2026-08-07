@@ -189,6 +189,7 @@ def build_game_level_dataset(schedules, team_panel, elo_df, injury_idx) -> pl.Da
         "home_score", "away_score", "result", "spread_line", "total_line",
         "home_rest", "away_rest", "div_game", "roof", "surface", "temp", "wind",
         "home_qb_name", "away_qb_name", "home_coach", "away_coach",
+        "gameday", "weekday", "gametime",
     ]).with_columns(
         # Clave global ordenable temporada+semana, para poder hacer un
         # join "asof" (último valor conocido) por equipo, en vez de un

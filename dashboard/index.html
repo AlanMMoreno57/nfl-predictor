@@ -19,6 +19,7 @@
     --bg: #10161f;
     --bg-panel: #171f2b;
     --bg-card: #1c2534;
+    --bg-inset: #151d29;
     --line: #2a3546;
     --ink: #e8ecf1;
     --ink-dim: #8b96a8;
@@ -29,7 +30,7 @@
     --away: #6a9fd8;
     --danger: #d9634c;
   }
-  * { box-sizing: border-box; }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   body {
     margin: 0;
     background: var(--bg);
@@ -40,7 +41,7 @@
     min-height: 100vh;
   }
   header {
-    padding: 28px 24px 20px;
+    padding: 22px 24px 16px;
     border-bottom: 1px solid var(--line);
     display: flex;
     justify-content: space-between;
@@ -64,159 +65,6 @@
     text-align: right;
     line-height: 1.6;
   }
-  main {
-    max-width: 980px;
-    margin: 0 auto;
-    padding: 24px;
-  }
-  .week-title {
-    font-family: 'Teko', sans-serif;
-    font-size: 26px;
-    font-weight: 600;
-    color: var(--ink-dim);
-    letter-spacing: 0.5px;
-    margin: 4px 0 20px;
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
-  }
-  .week-title b { color: var(--ink); font-size: 30px; }
-  .controls {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 18px;
-  }
-  .controls button {
-    background: var(--bg-panel);
-    border: 1px solid var(--line);
-    color: var(--ink-dim);
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    padding: 7px 12px;
-    border-radius: 3px;
-    cursor: pointer;
-    transition: all 0.15s ease;
-  }
-  .controls button:hover { border-color: var(--amber-dim); color: var(--ink); }
-  .controls button.active { background: var(--amber); border-color: var(--amber); color: #1a1206; font-weight: 600; }
-
-  .game-card {
-    background: var(--bg-card);
-    border: 1px solid var(--line);
-    border-radius: 6px;
-    padding: 18px 20px;
-    margin-bottom: 12px;
-    position: relative;
-    overflow: hidden;
-  }
-  .game-card::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0; bottom: 0;
-    width: 3px;
-  }
-  .game-card.conf-Alta::before { background: var(--turf); }
-  .game-card.conf-Media::before { background: var(--amber-dim); }
-  .game-card.conf-Baja::before { background: var(--ink-dim); }
-
-  .matchup-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px;
-    flex-wrap: wrap;
-  }
-  .teams {
-    font-family: 'Teko', sans-serif;
-    font-size: 28px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .teams .at { color: var(--ink-dim); font-size: 18px; font-weight: 500; }
-  .teams .winner { color: var(--amber); }
-  .badge {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10.5px;
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    padding: 4px 9px;
-    border-radius: 3px;
-    border: 1px solid var(--line);
-    color: var(--ink-dim);
-    white-space: nowrap;
-  }
-  .badge.div { color: var(--away); border-color: rgba(106,159,216,0.35); }
-
-  .prob-bar-wrap {
-    margin-top: 14px;
-  }
-  .prob-labels {
-    display: flex;
-    justify-content: space-between;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 12px;
-    color: var(--ink-dim);
-    margin-bottom: 5px;
-  }
-  .prob-labels .home-label { color: var(--amber); }
-  .prob-bar {
-    height: 8px;
-    border-radius: 4px;
-    background: var(--away);
-    position: relative;
-    overflow: hidden;
-    /* yard-line ticks: la firma visual del dashboard */
-    background-image: repeating-linear-gradient(
-      90deg, rgba(16,22,31,0.55) 0, rgba(16,22,31,0.55) 1px,
-      transparent 1px, transparent 10%
-    );
-  }
-  .prob-bar-fill {
-    position: absolute;
-    top: 0; right: 0; bottom: 0;
-    background: var(--amber);
-    background-image: repeating-linear-gradient(
-      90deg, rgba(16,22,31,0.45) 0, rgba(16,22,31,0.45) 1px,
-      transparent 1px, transparent 10%
-    );
-  }
-
-  .detail-row {
-    margin-top: 14px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 18px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11.5px;
-    color: var(--ink-dim);
-    border-top: 1px dashed var(--line);
-    padding-top: 12px;
-  }
-  .detail-row .dv b { color: var(--ink); font-weight: 500; }
-  .detail-row .diverge { color: var(--danger); }
-
-  footer {
-    max-width: 980px;
-    margin: 20px auto 40px;
-    padding: 0 24px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    color: var(--ink-dim);
-    line-height: 1.6;
-  }
-  .loading, .error {
-    font-family: 'IBM Plex Mono', monospace;
-    color: var(--ink-dim);
-    padding: 40px 0;
-    text-align: center;
-  }
-  .error { color: var(--danger); }
-
   .install-btn {
     background: var(--amber);
     border: none;
@@ -232,8 +80,260 @@
   }
   .install-btn:hover { background: #ffb84d; }
 
+  main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 20px 20px 40px;
+  }
+  .week-title {
+    font-family: 'Teko', sans-serif;
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--ink-dim);
+    letter-spacing: 0.5px;
+    margin: 4px 0 16px;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .week-title b { color: var(--ink); font-size: 30px; }
+
+  .controls {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .controls button {
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    color: var(--ink-dim);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    padding: 6px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  .controls button:hover { border-color: var(--amber-dim); color: var(--ink); }
+  .controls button.active { background: var(--amber); border-color: var(--amber); color: #1a1206; font-weight: 600; }
+
+  /* --- Navegador partido a partido --- */
+  .nav-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .nav-arrow {
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s ease;
+  }
+  .nav-arrow:hover:not(:disabled) { border-color: var(--amber); color: var(--amber); }
+  .nav-arrow:disabled { opacity: 0.3; cursor: default; }
+  .nav-counter {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-dim);
+    text-align: center;
+  }
+  .nav-dots {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    margin-top: 4px;
+    flex-wrap: wrap;
+    max-width: 220px;
+  }
+  .nav-dots .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--line);
+    cursor: pointer;
+  }
+  .nav-dots .dot.active { background: var(--amber); }
+
+  /* --- Tarjeta principal del partido --- */
+  .game-card {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 22px 22px 18px;
+    position: relative;
+    overflow: hidden;
+    touch-action: pan-y;
+  }
+  .game-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    width: 3px;
+  }
+  .game-card.conf-Alta::before { background: var(--turf); }
+  .game-card.conf-Media::before { background: var(--amber-dim); }
+  .game-card.conf-Baja::before { background: var(--ink-dim); }
+
+  .game-date {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+  }
+
+  .matchup-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .teams {
+    font-family: 'Teko', sans-serif;
+    font-size: 34px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .teams .at { color: var(--ink-dim); font-size: 20px; font-weight: 500; }
+  .teams .winner { color: var(--amber); }
+  .badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    padding: 4px 9px;
+    border-radius: 3px;
+    border: 1px solid var(--line);
+    color: var(--ink-dim);
+    white-space: nowrap;
+  }
+  .badge.div { color: var(--away); border-color: rgba(106,159,216,0.35); }
+
+  .prob-bar-wrap { margin-top: 16px; }
+  .prob-labels {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-dim);
+    margin-bottom: 5px;
+  }
+  .prob-labels .home-label { color: var(--amber); }
+  .prob-bar {
+    height: 9px;
+    border-radius: 4px;
+    background: var(--away);
+    position: relative;
+    overflow: hidden;
+    background-image: repeating-linear-gradient(
+      90deg, rgba(16,22,31,0.55) 0, rgba(16,22,31,0.55) 1px,
+      transparent 1px, transparent 10%
+    );
+  }
+  .prob-bar-fill {
+    position: absolute;
+    top: 0; right: 0; bottom: 0;
+    background: var(--amber);
+    background-image: repeating-linear-gradient(
+      90deg, rgba(16,22,31,0.45) 0, rgba(16,22,31,0.45) 1px,
+      transparent 1px, transparent 10%
+    );
+  }
+
+  /* --- Secciones de estadísticas abajo --- */
+  .stat-section {
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--line);
+  }
+  .stat-section h4 {
+    margin: 0 0 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    color: var(--ink-dim);
+  }
+
+  .vs-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 10px;
+    align-items: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+  }
+  .vs-row .away-col { text-align: left; color: var(--away); }
+  .vs-row .home-col { text-align: right; color: var(--amber); }
+  .vs-row .label-col { text-align: center; color: var(--ink-dim); font-size: 10px; text-transform: uppercase; }
+  .vs-row + .vs-row { margin-top: 8px; }
+
+  .h2h-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--ink-dim);
+    padding: 6px 0;
+    border-bottom: 1px solid var(--bg-inset);
+  }
+  .h2h-item:last-child { border-bottom: none; }
+  .h2h-item b { color: var(--ink); }
+  .h2h-empty {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--ink-dim);
+    font-style: italic;
+  }
+
+  .detail-row {
+    margin-top: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-dim);
+    border-top: 1px dashed var(--line);
+    padding-top: 12px;
+  }
+  .detail-row .dv b { color: var(--ink); font-weight: 500; }
+  .detail-row .diverge { color: var(--danger); }
+
+  footer {
+    max-width: 720px;
+    margin: 24px auto 40px;
+    padding: 0 20px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    color: var(--ink-dim);
+    line-height: 1.6;
+  }
+  .loading, .error {
+    font-family: 'IBM Plex Mono', monospace;
+    color: var(--ink-dim);
+    padding: 40px 0;
+    text-align: center;
+  }
+  .error { color: var(--danger); }
+
   @media (max-width: 560px) {
-    .teams { font-size: 22px; }
+    .teams { font-size: 26px; }
     header { flex-direction: column; align-items: flex-start; }
     .meta { text-align: left; }
   }
@@ -251,23 +351,35 @@
 
 <main>
   <div class="week-title" id="week-title"></div>
+
   <div class="controls">
     <button data-sort="week" class="active">Orden del calendario</button>
     <button data-sort="confidence">Mayor confianza primero</button>
     <button data-sort="divergence">Mayor divergencia vs. Vegas</button>
   </div>
-  <div id="games-container"><div class="loading">Cargando predicciones…</div></div>
+
+  <div class="nav-row">
+    <button class="nav-arrow" id="prev-btn" aria-label="Partido anterior">←</button>
+    <div>
+      <div class="nav-counter" id="nav-counter">Partido — de —</div>
+      <div class="nav-dots" id="nav-dots"></div>
+    </div>
+    <button class="nav-arrow" id="next-btn" aria-label="Partido siguiente">→</button>
+  </div>
+
+  <div id="game-container"><div class="loading">Cargando predicciones…</div></div>
 </main>
 
 <footer>
   Modelo: ensemble XGBoost + Logistic Regression sobre EPA rolling, ELO dinámico, lesiones ponderadas y contexto de calendario.
   El "margen esperado" y el "spread de Vegas" están en la misma convención: positivo = favorito el equipo local.
-  Divergencia = diferencia entre el margen del modelo y la línea de Vegas; una divergencia grande no implica que el modelo tenga razón, solo que difiere del mercado.
+  Desliza o usa las flechas ← → para navegar entre partidos.
 </footer>
 
 <script>
 let allGames = [];
 let currentSort = 'week';
+let currentIndex = 0;
 
 async function loadPredictions() {
   try {
@@ -276,7 +388,7 @@ async function loadPredictions() {
     const data = await res.json();
     render(data);
   } catch (err) {
-    document.getElementById('games-container').innerHTML =
+    document.getElementById('game-container').innerHTML =
       `<div class="error">No se pudieron cargar las predicciones (${err.message}). ` +
       `Corre 'python src/predict.py' para generar dashboard/data/predictions.json.</div>`;
     document.getElementById('meta-info').textContent = 'Sin datos';
@@ -285,6 +397,7 @@ async function loadPredictions() {
 
 function render(data) {
   allGames = data.games;
+  currentIndex = 0;
 
   document.getElementById('week-title').innerHTML =
     `Temporada ${data.season} <b>Semana ${data.week}</b>`;
@@ -296,10 +409,10 @@ function render(data) {
     `(temp. ${data.training_report_summary.test_season})<br>` +
     `Generado: ${genDate.toLocaleString('es-MX', {dateStyle:'medium', timeStyle:'short'})}`;
 
-  renderGames();
+  applySort();
 }
 
-function renderGames() {
+function applySort() {
   const sorted = [...allGames];
   if (currentSort === 'confidence') {
     sorted.sort((a, b) => Math.abs(b.home_win_probability - 0.5) - Math.abs(a.home_win_probability - 0.5));
@@ -309,12 +422,63 @@ function renderGames() {
       Math.abs(a.predicted_margin_home - a.vegas_spread_line)
     );
   }
-
-  const container = document.getElementById('games-container');
-  container.innerHTML = sorted.map(gameCard).join('');
+  allGames = sorted;
+  currentIndex = 0;
+  renderNav();
+  renderGame();
 }
 
-function gameCard(g) {
+function renderNav() {
+  document.getElementById('nav-counter').textContent =
+    `Partido ${currentIndex + 1} de ${allGames.length}`;
+
+  const dotsEl = document.getElementById('nav-dots');
+  dotsEl.innerHTML = allGames.map((_, i) =>
+    `<div class="dot ${i === currentIndex ? 'active' : ''}" data-idx="${i}"></div>`
+  ).join('');
+  dotsEl.querySelectorAll('.dot').forEach(dot => {
+    dot.addEventListener('click', () => { currentIndex = parseInt(dot.dataset.idx); renderNav(); renderGame(); });
+  });
+
+  document.getElementById('prev-btn').disabled = currentIndex === 0;
+  document.getElementById('next-btn').disabled = currentIndex === allGames.length - 1;
+}
+
+function formatDate(g) {
+  if (!g.gameday) return '';
+  const d = new Date(g.gameday + 'T00:00:00');
+  const dias = {Monday:'Lunes', Tuesday:'Martes', Wednesday:'Miércoles', Thursday:'Jueves', Friday:'Viernes', Saturday:'Sábado', Sunday:'Domingo'};
+  const dia = dias[g.weekday] || g.weekday || '';
+  const fecha = d.toLocaleDateString('es-MX', {day:'numeric', month:'short'});
+  return `${dia} ${fecha}${g.gametime ? ' · ' + g.gametime : ''}`;
+}
+
+function recordLabel(rec) {
+  if (!rec) return '—';
+  const base = `${rec.wins}-${rec.losses}${rec.ties ? '-' + rec.ties : ''}`;
+  return rec.is_previous_season ? `${base} (${rec.season})` : base;
+}
+
+function epaBar(homeVal, awayVal, higherIsBetter = true) {
+  // barra comparativa simple entre dos valores
+  const max = Math.max(Math.abs(homeVal || 0), Math.abs(awayVal || 0), 0.001);
+  const homePct = Math.max(8, Math.abs(homeVal || 0) / max * 100);
+  const awayPct = Math.max(8, Math.abs(awayVal || 0) / max * 100);
+  return { homePct, awayPct };
+}
+
+function h2hList(h2h, homeTeam) {
+  if (!h2h || h2h.length === 0) {
+    return `<div class="h2h-empty">Sin enfrentamientos recientes registrados en el dataset.</div>`;
+  }
+  return h2h.map(g => {
+    const label = `${g.away_team} ${g.away_score} @ ${g.home_team} ${g.home_score}`;
+    return `<div class="h2h-item"><span>T.${g.season} S${g.week} — ${label}</span><b>${g.winner || 'Empate'}</b></div>`;
+  }).join('');
+}
+
+function renderGame() {
+  const g = allGames[currentIndex];
   const homePct = (g.home_win_probability * 100).toFixed(1);
   const awayPct = (g.away_win_probability * 100).toFixed(1);
   const divergence = (g.predicted_margin_home - g.vegas_spread_line);
@@ -323,8 +487,13 @@ function gameCard(g) {
     ? `${g.temp_f ?? '—'}°F · viento ${g.wind_mph ?? '—'} mph · ${g.surface ?? '—'}`
     : `${g.roof ?? '—'} · ${g.surface ?? '—'}`;
 
-  return `
+  const epaOff = epaBar(g.home_epa_off_roll5, g.away_epa_off_roll5);
+  const epaDef = epaBar(g.home_epa_def_roll5, g.away_epa_def_roll5);
+
+  document.getElementById('game-container').innerHTML = `
     <div class="game-card conf-${g.confidence}">
+      <div class="game-date">${formatDate(g)}</div>
+
       <div class="matchup-row">
         <div class="teams">
           <span class="${g.predicted_winner === g.away_team ? 'winner' : ''}">${g.away_team}</span>
@@ -342,9 +511,35 @@ function gameCard(g) {
           <span>${g.away_team} ${awayPct}%</span>
           <span class="home-label">${g.home_team} ${homePct}%</span>
         </div>
-        <div class="prob-bar">
-          <div class="prob-bar-fill" style="width:${homePct}%"></div>
+        <div class="prob-bar"><div class="prob-bar-fill" style="width:${homePct}%"></div></div>
+      </div>
+
+      <div class="stat-section">
+        <h4>Récord de temporada</h4>
+        <div class="vs-row">
+          <span class="away-col">${g.away_team} ${recordLabel(g.away_record)}</span>
+          <span class="label-col">RÉCORD</span>
+          <span class="home-col">${g.home_team} ${recordLabel(g.home_record)}</span>
         </div>
+      </div>
+
+      <div class="stat-section">
+        <h4>Forma reciente (EPA promedio, últimos 5 partidos)</h4>
+        <div class="vs-row">
+          <span class="away-col">${g.away_epa_off_roll5 != null ? g.away_epa_off_roll5.toFixed(2) : '—'}</span>
+          <span class="label-col">EPA OFENSIVO</span>
+          <span class="home-col">${g.home_epa_off_roll5 != null ? g.home_epa_off_roll5.toFixed(2) : '—'}</span>
+        </div>
+        <div class="vs-row">
+          <span class="away-col">${g.away_epa_def_roll5 != null ? g.away_epa_def_roll5.toFixed(2) : '—'}</span>
+          <span class="label-col">EPA DEF. (permitido)</span>
+          <span class="home-col">${g.home_epa_def_roll5 != null ? g.home_epa_def_roll5.toFixed(2) : '—'}</span>
+        </div>
+      </div>
+
+      <div class="stat-section">
+        <h4>Últimos enfrentamientos</h4>
+        ${h2hList(g.head_to_head, g.home_team)}
       </div>
 
       <div class="detail-row">
@@ -359,12 +554,34 @@ function gameCard(g) {
   `;
 }
 
+function goPrev() { if (currentIndex > 0) { currentIndex--; renderNav(); renderGame(); } }
+function goNext() { if (currentIndex < allGames.length - 1) { currentIndex++; renderNav(); renderGame(); } }
+
+document.getElementById('prev-btn').addEventListener('click', goPrev);
+document.getElementById('next-btn').addEventListener('click', goNext);
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowLeft') goPrev();
+  if (e.key === 'ArrowRight') goNext();
+});
+
+// swipe táctil
+let touchStartX = null;
+const main = document.querySelector('main');
+main.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; }, {passive: true});
+main.addEventListener('touchend', (e) => {
+  if (touchStartX === null) return;
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(dx) > 50) { dx > 0 ? goPrev() : goNext(); }
+  touchStartX = null;
+}, {passive: true});
+
 document.querySelectorAll('.controls button').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.controls button').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     currentSort = btn.dataset.sort;
-    renderGames();
+    applySort();
   });
 });
 
@@ -382,7 +599,6 @@ if ("serviceWorker" in navigator) {
 let deferredInstallPrompt = null;
 const installBtn = document.getElementById("install-btn");
 
-// Chrome/Android: se puede interceptar el prompt nativo de instalación.
 window.addEventListener("beforeinstallprompt", (event) => {
   event.preventDefault();
   deferredInstallPrompt = event;
@@ -396,7 +612,6 @@ installBtn.addEventListener("click", async () => {
     deferredInstallPrompt = null;
     installBtn.style.display = "none";
   } else {
-    // iOS Safari no soporta beforeinstallprompt: se dan instrucciones manuales.
     alert(
       "Para instalar en iPhone/iPad:\n\n" +
       "1. Toca el botón de Compartir (el cuadrado con flecha hacia arriba)\n" +
@@ -406,8 +621,6 @@ installBtn.addEventListener("click", async () => {
   }
 });
 
-// En iOS no hay evento beforeinstallprompt, así que mostramos el botón
-// siempre que la app NO esté ya corriendo en modo standalone (instalada).
 const isStandalone = window.matchMedia("(display-mode: standalone)").matches
   || window.navigator.standalone === true;
 const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
