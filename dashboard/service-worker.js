@@ -11,9 +11,19 @@
  *    más recientes; si no hay conexión, cae al último JSON cacheado
  *    (así el usuario ve "algo" aunque esté sin internet, en vez de
  *    pantalla en blanco).
+ *
+ * IMPORTANTE — mantenimiento: el navegador solo revisa si hay una
+ * versión nueva de ESTE archivo (service-worker.js) comparándolo byte
+ * por byte con el anterior. Si solo cambias index.html (o el CSS/JS
+ * dentro de él) y NO tocas este archivo, el navegador nunca se entera
+ * de que hay algo nuevo y sigue sirviendo la versión vieja cacheada
+ * indefinidamente. Regla práctica: cada vez que cambies cualquier
+ * archivo del app shell (index.html, manifest.json, íconos), sube
+ * también el número de CACHE_NAME de este archivo (v2, v3, v4...)
+ * para forzar a que el navegador detecte el cambio y refresque la caché.
  */
 
-const CACHE_NAME = "nfl-predictor-v1";
+const CACHE_NAME = "nfl-predictor-v2";
 const APP_SHELL = [
   "./",
   "./index.html",
