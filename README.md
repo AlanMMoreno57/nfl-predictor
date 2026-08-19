@@ -1,5 +1,7 @@
 # NFL Predictor — Pipeline automatizado de predicción de partidos
 
+https://alanmmoreno57.github.io/nfl-predictor/
+
 Sistema de Machine Learning que descarga datos NFL actualizados, entrena un modelo,
 genera predicciones semanales, y las muestra en un dashboard web — todo automatizado
 con GitHub Actions (gratis, sin servidores).
