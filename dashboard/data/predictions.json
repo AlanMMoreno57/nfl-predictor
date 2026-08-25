@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-18T09:19:40.307073+00:00",
+  "generated_at": "2026-08-25T09:23:02.710911+00:00",
   "season": 2026,
   "week": 1,
   "model_version": "xgboost+logistic_ensemble_v1",
@@ -198,7 +198,7 @@
       "predicted_margin_home": -2.9,
       "confidence": "Baja",
       "vegas_spread_line": -2.5,
-      "vegas_total_line": 46.5,
+      "vegas_total_line": 47.5,
       "is_divisional": false,
       "home_qb": null,
       "away_qb": null,
