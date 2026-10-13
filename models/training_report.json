@@ -1,7 +1,7 @@
 {
   "test_season": 2026,
   "n_train_games": 2668,
-  "n_test_games": 64,
+  "n_test_games": 79,
   "feature_columns": [
     "diff_epa_off_roll5",
     "diff_epa_def_roll5",
@@ -12,18 +12,18 @@
     "spread_line"
   ],
   "logistic_regression": {
-    "accuracy": 0.640625,
-    "log_loss": 0.648893888619237,
-    "brier": 0.22823462300319888
+    "accuracy": 0.6329113924050633,
+    "log_loss": 0.6497763153199556,
+    "brier": 0.22836381214630788
   },
   "xgboost": {
-    "accuracy": 0.609375,
-    "log_loss": 0.6377840638160706,
-    "brier": 0.22380265593528748
+    "accuracy": 0.620253164556962,
+    "log_loss": 0.6332226395606995,
+    "brier": 0.22024033963680267
   },
   "ridge_margin": {
-    "mae": 9.773119309552612,
-    "rmse": 12.310219761983015
+    "mae": 9.863742435955972,
+    "rmse": 12.46678913570865
   },
-  "vegas_benchmark_mae": 9.6328125
+  "vegas_benchmark_mae": 9.778481012658228
 }
